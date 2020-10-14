@@ -1,6 +1,7 @@
 extends Node2D
 #storage of shapes with neirbours, might be a bad way to store shapes, 
 #I don'know and don't care, might look into it in the future. 
+
 var nodes = {
 	#big shape
 	Vector2(900,0) : [Vector2(1000,150), Vector2(100,0)],
@@ -26,8 +27,11 @@ var points_at_point = []
 func _ready():
 	#drawing stuff
 	set_process(true)
-	for ob in _points_at_slice(nodes):
-		print(ob)
+	
+	var output = _phase_0(nodes)
+	output = _phase_1(nodes, keys, output)
+	
+
 
 #needed for drawing 
 func _process(delta): 
@@ -45,16 +49,12 @@ func _draw():
 		for ob in slice:
 			draw_line(ob, slice_array, Color.white, 10.00)
 
-
-func _points_at_slice(nodes):
-
+func _phase_0(nodes):
 	keys.sort_custom(self, "custom_sort")
 	print_debug(keys)
-	
-	#will rename variables in the furture 
 	var num = 0
-	var slice = [] #the current slice
-	var slice_array = [] # an array of current slices
+	var slice = []
+	var slice_array = []
 	
 	while num < keys.size():
 		var index = null
@@ -65,10 +65,8 @@ func _points_at_slice(nodes):
 			slice.insert(index, keys[num])
 			slice.insert(index, keys[num])
 			slice_array.append(slice)
-#			print(slice_array[slice_array.size()-1])
 		elif nodes[keys[num]][0].x <= keys[num].x and nodes[keys[num]][1].x <= keys[num].x:
 			var slice_save_point = slice.duplicate(true)
-#			print("decrease")
 			index = _decrease_in_conn(slice, keys, nodes, num, 0)
 			if index != null:
 				slice[index] = keys[num]
@@ -79,19 +77,14 @@ func _points_at_slice(nodes):
 				slice_save_point.remove(index)
 			slice_array.append(slice)
 			slice = slice_save_point.duplicate(true)
-#			print(slice_array[slice_array.size()-1])
 		else:
 			index = _not_increase_in_conn(slice, keys, nodes, num)
 			if index != null:
 				slice[index] = keys[num]
 				slice_array.append(slice)
-#				print(slice_array[slice_array.size()-1])
 		num += 1
-	
 	return slice_array
 
-
-#sort based on x value if there the same y value 
 func custom_sort(a, b):
 	if a.x < b.x:
 		return true 
@@ -100,7 +93,7 @@ func custom_sort(a, b):
 			return true
 	return false 
 
-
+#these things are simular
 func _increase_in_conn(slice, keys, nodes, num):
 	if !(slice.empty()):
 		var i = 0
@@ -123,3 +116,46 @@ func _not_increase_in_conn(slice, keys, nodes, num):
 		index = slice.find(nodes[keys[num]][1])
 		if index >= 0: return index 
 		else: return  
+
+
+
+func _phase_1(nodes, keys, input):
+	input.invert()
+	keys.invert()
+	
+	
+	var num = 0
+	var to_be_removed = []
+	while num < input.size():
+		var num_2 = 0
+#		print(input[num])
+		while num_2 < input[num].size():
+			if !(input[num][num_2] == keys[num]):
+				if !(input[num].size() == input[num-1].size()):
+					#change
+					if num_2 > input[num].find(keys[num]):
+						var current = input[num][num_2]
+						var previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
+						
+						if !(current.x == previous.x):
+							var t = (keys[num].x - current.x) / (previous.x - current.x)
+							input[num][num_2] = current.linear_interpolate(previous, t)
+						
+					else:
+						var current = input[num][num_2]
+						var previous = input[num-1][num_2]
+						
+						if !(current.x == previous.x):
+							var t = (keys[num].x - current.x) / (previous.x - current.x)
+							input[num][num_2] = current.linear_interpolate(previous, t)
+				else:
+					var current = input[num][num_2]
+					var previous = input[num-1][num_2]
+					
+					if !(current.x == previous.x):
+							var t = (keys[num].x - current.x) / (previous.x - current.x)
+							input[num][num_2] = current.linear_interpolate(previous, t)
+			num_2 += 1
+		print(input[num])
+		num += 1
+		
