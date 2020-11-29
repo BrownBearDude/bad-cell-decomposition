@@ -1,6 +1,6 @@
 extends Node2D
 
-export var table = [Vector2(-3, 0.86), Vector2(-2, 1.45), Vector2(-1, 1.76), Vector2(0, 1.9), Vector2(1, 1.75), Vector2(2, 1.4), Vector2(3, 0.8)]
+export var table = [Vector2(-3, 0.74), Vector2(-2, 1.25), Vector2(-1, 1.57), Vector2(0, 1.7), Vector2(1, 1.56), Vector2(2, 1.2), Vector2(3, 0.6)]
 var n = table.size()
 
 # Called when the node enters the scene tree for the first time.
