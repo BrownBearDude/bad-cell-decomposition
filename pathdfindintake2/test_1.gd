@@ -31,7 +31,6 @@ func _ready():
 	yield(self, "pathfinding_complete")
 	set_process(true)
 
-
 #needed for drawing 
 func _process(delta): 
 	update()
@@ -59,7 +58,6 @@ func _phase_0(nodes):
 	var num = 0
 	var slice = []
 	var slice_array = []
-
 	while num < keys.size():
 		var index = null
 		slice_array = slice_array.duplicate(true)
@@ -94,9 +92,6 @@ func _phase_0(nodes):
 				slice[index] = keys[num]
 				slice_array.append(slice)
 		num += 1
-	print("bruh")
-	for ob in slice_array:
-		print(ob)
 	emit_signal("pathfinding_complete")
 	return _phase_1(nodes, keys, slice_array)
 
@@ -132,7 +127,6 @@ func _not_increase_in_conn(slice, keys, nodes, num):
 		if index >= 0: return index 
 		else: return  
 
-
 func _phase_1(nodes, keys, input):
 	input.invert()
 	keys.invert()
@@ -158,10 +152,6 @@ func _phase_1(nodes, keys, input):
 							input[num][num_2] = current.linear_interpolate(previous, t)
 						#normal progression
 			elif input[num].size() < input[num-1].size():
-				print(input[num-1])
-				print(keys[num-1])
-				print(input[num])
-				print(keys[num])
 				if num_2 >= input[num-1].find(keys[num-1]):
 					var current = input[num][num_2]
 					var previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
@@ -186,9 +176,7 @@ func _phase_1(nodes, keys, input):
 	
 	keys.invert()
 	input.invert()
-	return(_phase_2(nodes, keys, input))
-
-
+	return _phase_2(nodes, keys, input)
 
 func _phase_2(nodes, keys, input):
 	var final_array = []
@@ -207,22 +195,22 @@ func _phase_2(nodes, keys, input):
 	return _phase_3(nodes, keys, final_array)
 
 func _phase_3(nodes, keys, input):
-	var lane_width = 20
 	var final_path = []
 	for num in range(0, input.size()):
-		var lane = 0 
-		var top = []
-		var bottom = []
+		var path_width = 30
+		var path = 0
 		for num_2 in range(1, input[num].size()):
-			if !(input[num][num_2-1][0].x - input[num][num_2][0].x == 0):
-				for num_3 in range(0, floor((input[num][num_2-1][0].x - input[num][num_2][0].x)/lane_width)):
-					lane += 20
-					var t = lane / (input[num][num_2-1][0].x - input[num][num_2][0].x)
-					top.append(input[num][num_2-1][0].linear_interpolate(input[num][num_2][0], t))
-			if !(input[num][num_2-1][1].x - input[num][num_2][1].x == 0):
-				for num_3 in range(0, floor((input[num][num_2-1][1].x - input[num][num_2][1].x)/lane_width)):
-					lane += 20
-					var t = lane / (input[num][num_2-1][1].x - input[num][num_2][1].x)
-					bottom.append(input[num][num_2-1][1].linear_interpolate(input[num][num_2][1], t))
-		
+			if !(input[num][num_2][0].x - input[num][num_2-1][0].x == 0): 
+				while path * path_width < (input[num][num_2][0].x - input[num][num_2-1][0].x):
+					var t = 0
+					if !(path * path_width == 0):
+						t = (path * path_width) / (input[num][num_2][0].x - input[num][num_2-1][0].x)
+						final_path.append(input[num][num_2-1][0].linear_interpolate(input[num][num_2][0], t))
+						final_path.append(input[num][num_2-1][1].linear_interpolate(input[num][num_2][1], t))
+					path += 1
+				path = path - (input[num][num_2][0].x - input[num][num_2-1][0].x) / path_width 
+				print(path)
+	emit_signal("path_finding_complete")
 	return(final_path)
+	
+
