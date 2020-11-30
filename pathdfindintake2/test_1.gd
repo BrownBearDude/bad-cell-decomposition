@@ -66,13 +66,12 @@ func _phase_0(nodes):
 			if index == null: index = 0
 			slice_array.append(slice.duplicate(true))
 			keys.insert(num, keys[num])
-			slice.insert(index, keys[num])
+			slice.insert(index, keys[num]);
 			slice.insert(index, keys[num])
 			slice_array.append(slice)
 			num += 1
 		elif nodes[keys[num]][0].x <= keys[num].x and nodes[keys[num]][1].x <= keys[num].x:
 			var slice_save_point = slice.duplicate(true)
-			
 			index = _decrease_in_conn(slice, keys, nodes, num, 0)
 			if index != null:
 				slice[index] = keys[num]
@@ -130,50 +129,26 @@ func _not_increase_in_conn(slice, keys, nodes, num):
 func _phase_1(nodes, keys, input):
 	input.invert()
 	keys.invert()
-	
 	for num in range(2, input.size()):
 		for num_2 in range(0, input[num].size()):
+			var current = input[num][num_2]
+			var previous = Vector2.ZERO
 			if input[num].size() > input[num-1].size():
 				if !(input[num][num_2] == keys[num]):
 					if num_2 > input[num].find(keys[num]):
-						var current = input[num][num_2]
-						var previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
-							
-						if !(current.x == previous.x):
-							var t = (keys[num].x - current.x) / (previous.x - current.x)
-							input[num][num_2] = current.linear_interpolate(previous, t)
-						#modified progression
+						previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
 					else:
-						var current = input[num][num_2]
-						var previous = input[num-1][num_2]
-			
-						if !(current.x == previous.x):
-							var t = (keys[num].x - current.x) / (previous.x - current.x)
-							input[num][num_2] = current.linear_interpolate(previous, t)
-						#normal progression
+						previous = input[num-1][num_2]
 			elif input[num].size() < input[num-1].size():
 				if num_2 >= input[num-1].find(keys[num-1]):
-					var current = input[num][num_2]
-					var previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
-					if !(current.x == previous.x):
-						var t = (keys[num].x - current.x) / (previous.x - current.x)
-						input[num][num_2] = current.linear_interpolate(previous, t)
-					#modified progression
+					previous = input[num-1][num_2-(input[num].size() - input[num-1].size())]
 				else:
-					var current = input[num][num_2]
-					var previous = input[num-1][num_2]
-					if !(current.x == previous.x):
-						var t = (keys[num].x - current.x) / (previous.x - current.x)
-						input[num][num_2] = current.linear_interpolate(previous, t)
-					#modified progression
+					previous = input[num-1][num_2]
 			else:
-				var current = input[num][num_2]
-				var previous = input[num-1][num_2]
-				if !(current.x == previous.x):
-					var t = (keys[num].x - current.x) / (previous.x - current.x)
-					input[num][num_2] = current.linear_interpolate(previous, t)
-				#normal progression
-	
+				previous = input[num-1][num_2]
+			if !(current.x == previous.x):
+				var t = (keys[num].x - current.x) / (previous.x - current.x)
+				input[num][num_2] = current.linear_interpolate(previous, t)
 	keys.invert()
 	input.invert()
 	return _phase_2(nodes, keys, input)
