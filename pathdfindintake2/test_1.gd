@@ -199,14 +199,20 @@ func _phase_3(nodes, keys, input):
 	for num in range(0, input.size()):
 		var path_width = 30
 		var path = 0
+		var top_then_bottom = true
 		for num_2 in range(1, input[num].size()):
 			if !(input[num][num_2][0].x - input[num][num_2-1][0].x == 0): 
 				while path * path_width < (input[num][num_2][0].x - input[num][num_2-1][0].x):
 					var t = 0
 					if !(path * path_width == 0):
 						t = (path * path_width) / (input[num][num_2][0].x - input[num][num_2-1][0].x)
-						final_path.append(input[num][num_2-1][0].linear_interpolate(input[num][num_2][0], t))
-						final_path.append(input[num][num_2-1][1].linear_interpolate(input[num][num_2][1], t))
+						if top_then_bottom:
+							final_path.append(input[num][num_2-1][0].linear_interpolate(input[num][num_2][0], t))
+							final_path.append(input[num][num_2-1][1].linear_interpolate(input[num][num_2][1], t))
+						else:
+							final_path.append(input[num][num_2-1][1].linear_interpolate(input[num][num_2][1], t))
+							final_path.append(input[num][num_2-1][0].linear_interpolate(input[num][num_2][0], t))
+						top_then_bottom = !top_then_bottom
 					path += 1
 				path = path - (input[num][num_2][0].x - input[num][num_2-1][0].x) / path_width 
 				print(path)
