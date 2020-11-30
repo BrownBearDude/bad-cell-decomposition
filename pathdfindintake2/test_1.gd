@@ -1,7 +1,4 @@
 extends Node2D
-#storage of shapes with neirbours, might be a bad way to store shapes, 
-#I don'know and don't care, might look into it in the future. 
-signal pathfinding_complete
 var show_path = false
 var nodes = {
 	#big shape
@@ -22,26 +19,21 @@ var nodes = {
 	Vector2(400,200) : [Vector2(700,200), Vector2(300,300)]
 }
 
-var keys = nodes.keys() 
-var points_at_point = []
-var f = []
+
+var paths = []
 
 func _ready():
-	f = _phase_0(nodes)
-	yield(self, "pathfinding_complete")
 	set_process(true)
 
-#needed for drawing 
 func _process(delta): 
 	update()
-	
-	#debugging mouse poisition
 	if Input.is_action_just_pressed("ui_accept"):
 		print(get_global_mouse_position())
 	if Input.is_action_just_pressed("toggle_show_path"):
 		show_path = !show_path
+	if Input.is_action_just_pressed("bruh"):
+		paths.append(_phase_0(nodes))
 
-#draw the outline of the big shape. 
 func _draw():
 	for ob in nodes:
 		var slice_array = ob
@@ -49,10 +41,13 @@ func _draw():
 		for ob in slice:
 			draw_line(ob, slice_array, Color.white, 10.00)
 	if show_path == true:
-		for num in range(1, f.size()):
-			draw_line(f[num-1], f[num], Color.red, 2)
+		if paths.size() > 0:
+			for num in range(0, paths.size()):
+				for num_2 in range(1, paths[num].size()):
+					draw_line(paths[num][num_2-1], paths[num][num_2], Color.red, 2)
 
 func _phase_0(nodes):
+	var keys = nodes.keys() 
 	keys.sort_custom(self, "custom_sort")
 	print_debug(keys)
 	var num = 0
@@ -91,7 +86,6 @@ func _phase_0(nodes):
 				slice[index] = keys[num]
 				slice_array.append(slice)
 		num += 1
-	emit_signal("pathfinding_complete")
 	return _phase_1(nodes, keys, slice_array)
 
 func custom_sort(a, b):
@@ -102,7 +96,6 @@ func custom_sort(a, b):
 			return true
 	return false 
 
-#these things are simular
 func _increase_in_conn(slice, keys, nodes, num):
 	if !(slice.empty()):
 		var i = 0
@@ -191,7 +184,7 @@ func _phase_3(nodes, keys, input):
 					path += 1
 				path = path - (input[num][num_2][0].x - input[num][num_2-1][0].x) / path_width 
 				print(path)
-	emit_signal("path_finding_complete")
 	return(final_path)
-	
 
+func _scalar_progection(v, u):
+	return(Vector2((v * u) / pow(abs(u), 2), u)) 
