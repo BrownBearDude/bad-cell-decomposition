@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/autotile_template_3x3_minimal_topdown_walls_thick.png-409d8747cb76cac51280a4e1fa43d3c3.stex"
+path="res://.import/Autotile_4th_level.png-a7d5f9eab32791c51d00a14a0df010c5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://autotile_template_3x3_minimal_topdown_walls_thick.png"
-dest_files=[ "res://.import/autotile_template_3x3_minimal_topdown_walls_thick.png-409d8747cb76cac51280a4e1fa43d3c3.stex" ]
+source_file="res://AutoTiles/Autotile_4th_level.png"
+dest_files=[ "res://.import/Autotile_4th_level.png-a7d5f9eab32791c51d00a14a0df010c5.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

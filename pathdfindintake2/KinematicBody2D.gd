@@ -5,7 +5,7 @@ var max_speed = 2000
 var speed = 0 
 
 var min_zoom = Vector2(0.5, 0.5)
-var max_zoom = Vector2(3, 3)
+var max_zoom = Vector2(100, 100)
 var zoom = 0
 
 
@@ -18,6 +18,8 @@ func _physics_process(delta):
 		zoom -= 0.01
 		if Input.is_action_pressed("speed_modify"):
 			zoom -= 0.04
+	if zoom < 0:
+		zoom = 0
 	$Camera2D.zoom = min_zoom.linear_interpolate(max_zoom, zoom)
 	
 

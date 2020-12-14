@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://KinematicBody2D.gd" type="Script" id=1]
+[ext_resource path="res://AutoTiles/crosshair.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 25.0
+radius = 1.0
 
 [node name="KinematicBody2D" type="KinematicBody2D"]
 collision_layer = 2
@@ -22,4 +23,7 @@ drag_margin_bottom = 0.0
 [node name="ZoomOverlayTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="crosshair" type="Sprite" parent="."]
+texture = ExtResource( 2 )
 [connection signal="timeout" from="ZoomOverlayTimer" to="." method="_on_ZoomOverlayTimer_timeout"]

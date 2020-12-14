@@ -1,6 +1,6 @@
 extends Node2D
 var show_path = false
-var nodes = {
+var nodes_2 = {
 	#big shape
 	Vector2(900,0) : [Vector2(1000,150), Vector2(100,0)],
 	Vector2(100,0) : [Vector2(900, 0), Vector2(0,300)],
@@ -19,25 +19,29 @@ var nodes = {
 	Vector2(400,200) : [Vector2(700,200), Vector2(300,300)]
 }
 
+var nodes_3 = {}
+
 
 var paths = []
+var title = "Game v0.1"
 
 func _ready():
 	set_process(true)
 
 func _process(delta): 
+	OS.set_window_title(title + " | fps: " + str(Engine.get_frames_per_second()))
 	update()
 	if Input.is_action_just_pressed("ui_accept"):
 		print(get_global_mouse_position())
 	if Input.is_action_just_pressed("toggle_show_path"):
 		show_path = !show_path
 	if Input.is_action_just_pressed("bruh"):
-		paths.append(_phase_0(nodes))
-
+		paths.append(_phase_0(nodes_2))
+	
 func _draw():
-	for ob in nodes:
+	for ob in nodes_3:
 		var slice_array = ob
-		var slice = nodes[ob]
+		var slice = nodes_3[ob]
 		for ob in slice:
 			draw_line(ob, slice_array, Color.white, 10.00)
 	if show_path == true:
@@ -147,6 +151,7 @@ func _phase_1(nodes, keys, input):
 	return _phase_2(nodes, keys, input)
 
 func _phase_2(nodes, keys, input):
+	print("bruh" + String(input))
 	var final_array = []
 	var temp_array = []
 	var previous_size = 0
@@ -183,8 +188,6 @@ func _phase_3(nodes, keys, input):
 						top_then_bottom = !top_then_bottom
 					path += 1
 				path = path - (input[num][num_2][0].x - input[num][num_2-1][0].x) / path_width 
-				print(path)
 	return(final_path)
 
-func _scalar_progection(v, u):
-	return(Vector2((v * u) / pow(abs(u), 2), u)) 
+
