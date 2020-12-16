@@ -315,11 +315,11 @@ disabled = true
 
 [node name="1" type="CollisionPolygon2D" parent="Shapes"]
 modulate = Color( 0, 0, 0, 1 )
-polygon = PoolVector2Array( 359.661, 272.414, 404.619, 213.839, 535.022, 201.168, 508.2, 241.98, 581.725, 285.125, 321.549, 289.017 )
+polygon = PoolVector2Array( 359.661, 272.414, 403.635, 213.969, 535.022, 201.168, 508.2, 241.98, 581.725, 285.125, 321.549, 289.017 )
 disabled = true
 
 [node name="2" type="CollisionPolygon2D" parent="Shapes"]
 modulate = Color( 0, 0, 0, 1 )
 position = Vector2( -0.836243, 0 )
-polygon = PoolVector2Array( 379.209, 210.926, 372.211, 116.714, 416.594, 117.443, 531.551, 130.615, 504.608, 169.533, 452.518, 152.17, 393.548, 169.463 )
+polygon = PoolVector2Array( 379.209, 210.926, 372.211, 116.714, 408.469, 118.028, 531.551, 130.615, 504.608, 169.533, 452.518, 152.17, 393.548, 169.463 )
 disabled = true
