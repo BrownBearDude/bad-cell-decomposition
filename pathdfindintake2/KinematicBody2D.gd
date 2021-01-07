@@ -4,9 +4,9 @@ var min_speed = 100
 var max_speed = 2000
 var speed = 0 
 
-var min_zoom = Vector2(0.5, 0.5)
-var max_zoom = Vector2(100, 100)
-var zoom = 0
+var min_zoom = Vector2(0.2, 0.2)
+var max_zoom = Vector2(5, 5)
+var zoom = 0.1
 
 
 func _physics_process(delta):

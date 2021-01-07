@@ -310,6 +310,7 @@ script = ExtResource( 16 )
 
 [node name="0" type="CollisionPolygon2D" parent="Shapes"]
 modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 0.39212, -2.49683 )
 polygon = PoolVector2Array( 178.536, 220.362, 243.67, 99.4536, 425.424, 81.4, 316.916, 26.8973, 477.464, 17.6095, 561.267, 70.9509, 640.662, 80.6098, 692.962, 143.198, 622.934, 201.884, 692.962, 276.949, 650.567, 339.437, 279.728, 344.57 )
 disabled = true
 
